@@ -22,13 +22,13 @@ echo -n Password:
 read -s PASSWORD 
 echo
 if [ "xEDIT" == "x$2" ]; then
-  openssl aes-256-cbc -pass env:PASSWORD -a -salt -d -in "${ENC_FILE}" >"${TMP_FILE}" || exit
+  openssl aes-256-cbc -md md5 -pass env:PASSWORD -a -salt -d -in "${ENC_FILE}" >"${TMP_FILE}" || exit
   nvim "${TMP_FILE}"
-  openssl aes-256-cbc -pass env:PASSWORD -a -salt -in "${TMP_FILE}" > "${ENC_FILE_IN_TAR_PATH}"
+  openssl aes-256-cbc -md md5 -pass env:PASSWORD -a -salt -in "${TMP_FILE}" > "${ENC_FILE_IN_TAR_PATH}"
   tar rvf "${ARCHIVE_PATH}" -C "${TMP_DIR}" "${ENC_FILE_IN_TAR_NAME}"
   mv "${ENC_FILE_IN_TAR_PATH}" "${ENC_FILE}"
 
 else
-  openssl aes-256-cbc -pass env:PASSWORD -a -salt -d -in "${ENC_FILE}" | less
+  openssl aes-256-cbc -md md5 -pass env:PASSWORD -a -salt -d -in "${ENC_FILE}" | less
 fi
 
